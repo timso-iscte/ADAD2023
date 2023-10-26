@@ -20,15 +20,21 @@ router.post("/", async (req, res) =>{
 //retrieves users by _id
 router.get("/:id", async (req, res) => {
 	var id = new ObjectId(req.params.id);
-	let results = await db.collection('users').find({ "_id": id
-
-
-	}).toArray();
+	let results = await db.collection('users').find(
+		{ "_id": id}
+	).project(
+		{"_id":0}
+	).toArray();
 	res.send(results).status(200);
-
-
 })
 
-
+//remove user by _id
+router.delete("/:id", async (req, res) => {
+	var id = new ObjectId(req.params.id);
+	let results = await db.collection('users').deleteOne({
+		"_id": id
+	});
+	res.send(results).status(200);
+})
 
 export default router;

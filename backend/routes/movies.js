@@ -13,33 +13,39 @@ router.get("/", async (req, res) => {
 //POST a movie
 router.post("/", async (req, res) =>{
 	let document = req.body;
-	let results = await db.collection('movies').insertOne(document);
+	let results = await db.collection('movies').insertMany(document);
 	res.send(results).status(200);
 })
 
 //retrieves movie by _id
 router.get("/:id", async (req, res) => {
 	var id = new ObjectId(req.params.id);
-	let results = await db.collection('movies').find({ "_id": id
-
-
-	}).toArray();
+	let results = await db.collection('movies').find(
+		{"_id": id}
+	).project(
+		{"_id":0}
+	).toArray();
 	res.send(results).status(200);
-
-
 })
 
-//remove movie by _id
-router.get("/:id", async (req, res) => {
+// remove movie by _id
+router.delete("/:id", async (req, res) => {
 	var id = new ObjectId(req.params.id);
-	let results = await db.collection('movies').find({ "_id": id
-
-
-	}).toArray();
+	let results = await db.collection('movies').deleteOne({
+		"_id": id
+	});
 	res.send(results).status(200);
-
-
 })
+
 
 
 export default router;
+
+// {
+// 	"title": "Minions",
+// 	"genres": "Comedy",
+// 	"year": "2015",
+// 	"genre": [
+// 		"Comedy"
+// 	]
+// }
