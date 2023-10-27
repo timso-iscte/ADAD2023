@@ -31,12 +31,22 @@ router.get("/:id", async (req, res) => {
 // remove movie by _id
 router.delete("/:id", async (req, res) => {
 	var id = new ObjectId(req.params.id);
-	let results = await db.collection('movies').deleteOne({
-		"_id": id
-	});
+	let results = await db.collection('movies').deleteOne(
+		{"_id": id}
+	);
 	res.send(results).status(200);
 })
 
+// update movie
+router.put("/:id", async (req, res) => {
+	var id = new ObjectId(req.params.id);
+	let document = req.body;
+	let results = await db.collection('movies').updateOne(
+		{"_id": id},
+		{document}   //not working
+	);
+	res.send(results).status(200)
+})
 
 
 export default router;
