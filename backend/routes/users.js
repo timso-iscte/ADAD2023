@@ -37,4 +37,9 @@ router.delete("/:id", async (req, res) => {
 	res.send(results).status(200);
 })
 
+//update user
+
+
+
+
 export default router;

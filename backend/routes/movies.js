@@ -48,6 +48,27 @@ router.put("/:id", async (req, res) => {
 	res.send(results).status(200)
 })
 
+// Displays list of top scored movies (by average
+// score), sorted in descending order. Show movie
+// information (title, year, etc.) in the response.
+// Limit to {num_movies}
+
+router.get("/higher/:num_movies", async (req, res) => {
+	var num_movies = req.params.num_movies;
+	let results = db.collection('users').aggregate([
+		{$project: {"movies":1}},
+		{$unwind: "$movies"},
+		{$group: {_id:"$movies.movieid", avg_rating:{$avg:"$movies.rating"}}},
+		{$sort: {avg_rating:-1}},
+		{$limit: num_movies}
+		
+	])
+	res.send(results).status(200)
+
+	
+
+})
+
 
 export default router;
 
