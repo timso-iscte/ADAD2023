@@ -6,8 +6,11 @@ const router = express.Router();
 
 // return first 50 documents from movies collection
 router.get("/", async (req, res) => {
-	let results = await db.collection('movies').find({}).limit(50).toArray();
-	res.send(results).status(200);
+		var id = new ObjectId(req.params.id);
+		let results = await db.collections('movies').aggregate([
+			{$lookup: {from:}}
+	
+		])
 });
 
 //POST a movie
@@ -53,7 +56,24 @@ router.get("/stars", async (req, res) => {
 	res.send(results).status(200)
 })
 
+// List all movies that have comments. Sort by
+// number of comments.
+router.get("/comments", async (req, res) => {
+	let results = await db.collection('comments').aggregate([
+		{$group: {_id:"$movie_id", nmr_of_comments:{$sum:1}}},
+		{$lookup: {from: "movies", localField: "_id", foreignField:"_id", as: "info"}},
+		{$sort: {nmr_of_comments: -1}},
+		{$project: {"_id":0, "info.title": 1, "nmr_of_comments":1}}
+	]).toArray()
+	res.send(results).status(200)
+
+})
+
 //retrieves movie by _id
+// Include in the response the avg_score of the movie
+// and a list of all comments
+
+
 router.get("/:id", async (req, res) => {
 	var id = new ObjectId(req.params.id);
 	let results = await db.collection('movies').find(
