@@ -6,11 +6,8 @@ const router = express.Router();
 
 // return first 50 documents from movies collection
 router.get("/", async (req, res) => {
-		var id = new ObjectId(req.params.id);
-		let results = await db.collections('movies').aggregate([
-			{$lookup: {from:}}
-	
-		])
+	let results = await db.collection('movies').find({}).limit(50).toArray();
+	res.send(results).status(200);
 });
 
 //POST a movie
