@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 //POST a user
 router.post("/", async (req, res) =>{
 	let document = req.body;
-	let results = await db.collection('users').insertOne(document);
+	let results = await db.collection('users').insertMany(document);
 	res.send(results).status(200);
 })
 
@@ -38,8 +38,29 @@ router.delete("/:id", async (req, res) => {
 })
 
 //update user
-
+router.put("/:id", async (req, res) => {
+	var id = new ObjectId(req.params.id);
+	let document = req.body;
+	let results = await db.collection('users').updateOne(
+		{"_id": id},
+		{$set: document}
+	);
+	res.send(results).status(200)
+})
 
 
 
 export default router;
+
+// {
+// "name": "Yaeko Hassan",
+//   "gender": "F",
+//   "age": 95,
+//   "occupation": "academic/educator",
+//   "movies": [
+//     {
+//       "movieid": 1419,
+//       "rating": 4,
+//       "timestamp": 956714815
+//     }]
+// }

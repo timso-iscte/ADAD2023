@@ -96,7 +96,7 @@ router.put("/:id", async (req, res) => {
 	let document = req.body;
 	let results = await db.collection('movies').updateOne(
 		{"_id": id},
-		{document}   //not working
+		{$set: document}
 	);
 	res.send(results).status(200)
 })
