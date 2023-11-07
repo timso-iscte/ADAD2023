@@ -12,9 +12,13 @@ router.get("/", async (req, res) => {
 
 //POST a user
 router.post("/", async (req, res) =>{
-	let document = req.body;
-	let results = await db.collection('users').insertMany(document);
-	res.send(results).status(200);
+	try{
+		let document = req.body;
+		let results = await db.collection('users').insertMany(document);
+		res.send(results).status(200);
+	}catch{
+		res.send("invalid object structure").status(400)
+	}
 })
 
 //retrieves users by _id
