@@ -222,13 +222,13 @@ router.post("/user/ratings", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
 	try{
-	var id = new ObjectId(req.params.id);
-	let results = await db.collection('movies').find(
-		{"_id": id}
-	).project(
-		{"_id":0}
-	).toArray();
-	res.send(results).status(200);
+	    var id = new ObjectId(req.params.id);
+	    let results = await db.collection('movies').find(
+	    	{"_id": id}
+	    ).project(
+	    	{"_id":0}
+	    ).toArray();
+	    res.send(results).status(200);
 	}catch(erros){
 		res.send("invalid id").status(400)
 	}
@@ -241,23 +241,23 @@ router.delete("/:id", async (req, res) => {
 		let results = await db.collection('movies').deleteOne(
 		{"_id": id}
 		);
-	res.send(results).status(200);
-		}catch(error){
-			res.send("invalid id").status(400)
-		}
+	    res.send(results).status(200);
+	}catch(error){
+		res.send("invalid id").status(400)
+	}
 	
 })
 
 // update movie
 router.put("/:id", async (req, res) => {
 	try{
-	var id = new ObjectId(req.params.id);
-	let document = req.body;
-	let results = await db.collection('movies').updateOne(
-		{"_id": id},
-		{$set: document}
-	);
-	res.send(results).status(200)
+	    var id = new ObjectId(req.params.id);
+	    let document = req.body;
+	    let results = await db.collection('movies').updateOne(
+	    	{"_id": id},
+	    	{$set: document}
+	    );
+	    res.send(results).status(200)
 	}catch(error){
 		res.send("invalid id").status(400)
 	}

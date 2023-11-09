@@ -18,33 +18,45 @@ router.post("/", async (req, res) =>{
 
 //retrieves comments by _id
 router.get("/:id", async (req, res) => {
-	var id = new ObjectId(req.params.id);
-	let results = await db.collection('comments').find(
-		{ "_id": id}
-	).project(
-		{"_id":0}
-	).toArray();
-	res.send(results).status(200);
+	try{
+		var id = new ObjectId(req.params.id);
+		let results = await db.collection('comments').find(
+			{ "_id": id}
+		).project(
+			{"_id":0}
+		).toArray();
+		res.send(results).status(200);
+	}catch(error){
+		res.send("invalid id").status(400)
+	}
 })
 
 //remove comments by _id
 router.delete("/:id", async (req, res) => {
-	var id = new ObjectId(req.params.id);
-	let results = await db.collection('comments').deleteOne({
-		"_id": id
-	});
-	res.send(results).status(200);
+	try{
+		var id = new ObjectId(req.params.id);
+		let results = await db.collection('comments').deleteOne({
+			"_id": id
+		});
+		res.send(results).status(200);
+	}catch(error){
+		res.send("invalid id").status(400)
+	}
 })
 
 //update comment
 router.put("/:id", async (req, res) => {
-	var id = new ObjectId(req.params.id);
-	let document = req.body;
-	let results = await db.collection('comments').updateOne(
-		{"_id": id},
-		{$set: document}
-	);
-	res.send(results).status(200)
+	try{
+		var id = new ObjectId(req.params.id);
+		let document = req.body;
+		let results = await db.collection('comments').updateOne(
+			{"_id": id},
+			{$set: document}
+		);
+		res.send(results).status(200)
+	}catch(error){
+		res.send("invalid id").status(400)
+	}
 })
 
 export default router;
