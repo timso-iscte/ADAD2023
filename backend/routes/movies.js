@@ -48,6 +48,11 @@ router.get("/higher/:num_movies", async (req, res) => {
 // ratings. Show movie information.
 // :order - “asc” or “desc”
 router.get("/ratings/:order", async (req, res) => {
+    if(req.params.order !="des" && req.params.order != "asc"){
+        res.send("invalid order, use asc or des").status(400)
+        return
+    }
+
     let sort =1;
     if(req.params.order === "des"){
         sort = -1;
